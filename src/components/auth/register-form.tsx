@@ -20,6 +20,7 @@ import { FormError } from "../form/form-error";
 import { FormSuccess } from "../form/form-success";
 import { RegisterSchema } from "@/schema";
 import { register } from "@/actions/register";
+import { Loader2 } from "lucide-react";
 
 export const RegisterForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -51,7 +52,7 @@ export const RegisterForm = () => {
     <CardWrapper
       headerTitle="Create an acount"
       headerLabel="It's quick and easy"
-      backButtonHref="/login"
+      backButtonHref="/signin"
       backButtonLabel="Already have an account?"
       showSocial
     >
@@ -115,11 +116,15 @@ export const RegisterForm = () => {
           <FormError message={error} />
           <FormSuccess message={success} />
           <Button
+            size={"lg"}
             disabled={isPending}
             type="submit"
-            className={cn("disabled:cursor-not-allowed")}
+            className={cn(
+              "disabled:cursor-not-allowed font-bold text-lg bg-green-700"
+            )}
           >
-            Submit
+            Sign Up
+            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           </Button>
         </form>
       </Form>

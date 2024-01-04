@@ -17,8 +17,8 @@ import { Input } from "@/components/ui/input";
 import { login } from "@/actions/login";
 import { useState, useTransition } from "react";
 import { cn } from "@/lib/utils";
-import { FormError } from "../form/form-error";
-import { FormSuccess } from "../form/form-success";
+import { FormError } from "@/components/form/form-error";
+import { FormSuccess } from "@/components/form/form-success";
 
 export const LoginForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -39,8 +39,8 @@ export const LoginForm = () => {
     setSuccess("");
     startTransition(() => {
       login(values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
+        setError(data?.error);
+        // setSuccess(data?.success);
       });
     });
   }
@@ -89,7 +89,7 @@ export const LoginForm = () => {
             type="submit"
             className={cn("disabled:cursor-not-allowed")}
           >
-            Submit
+            Login
           </Button>
         </form>
       </Form>
