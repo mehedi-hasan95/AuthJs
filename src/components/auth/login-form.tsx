@@ -19,8 +19,15 @@ import { useState, useTransition } from "react";
 import { cn } from "@/lib/utils";
 import { FormError } from "@/components/form/form-error";
 import { FormSuccess } from "@/components/form/form-success";
+import { useSearchParams } from "next/navigation";
 
 export const LoginForm = () => {
+  const searchParams = useSearchParams();
+  // Is user use same email in github or google?
+  const SameAccountError =
+    searchParams.get("error") === "OAuthAccountNotLinked"
+      ? "Email already exist in diffrent provider"
+      : "";
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
@@ -82,7 +89,7 @@ export const LoginForm = () => {
               </FormItem>
             )}
           />
-          <FormError message={error} />
+          <FormError message={error || SameAccountError} />
           <FormSuccess message={success} />
           <Button
             disabled={isPending}
