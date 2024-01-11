@@ -27,6 +27,19 @@ export const {
     },
   },
   callbacks: {
+    async signIn({ user, account }) {
+      // All provider can login except credentials
+      if (account?.provider !== "credentials") {
+        return true;
+      }
+
+      // Prevent unverifide credentials user
+      const existingUser = await getUserById(user.id);
+      if (!existingUser?.emailVerified) {
+        return false;
+      }
+      return true;
+    },
     async session({ session, token }) {
       if (session.user && token.sub) {
         session.user.id = token.sub;

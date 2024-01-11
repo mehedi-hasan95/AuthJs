@@ -47,6 +47,7 @@ export const RegisterForm = () => {
         setSuccess(data.success);
       });
     });
+    form.reset();
   }
   return (
     <CardWrapper
