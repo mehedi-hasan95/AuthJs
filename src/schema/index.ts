@@ -28,3 +28,17 @@ export const RegisterSchema = z
     message: "Passwords don't match",
     path: ["confirm"],
   });
+
+// Forgot Password
+export const ForgotPasswordSchema = z.object({
+  email: z.string().email({
+    message: "Email is required",
+  }),
+});
+
+// Forgot Password
+export const NewPasswordSchema = z.object({
+  password: z.string().min(1, {
+    message: "New Password must be at least 1 characters.",
+  }),
+});

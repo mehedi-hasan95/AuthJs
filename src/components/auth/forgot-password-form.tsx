@@ -1,9 +1,9 @@
 "use client";
+
 import * as z from "zod";
 import { CardWrapper } from "@/components/auth/card-wrapper";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema } from "@/schema";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -19,34 +19,26 @@ import { useState, useTransition } from "react";
 import { cn } from "@/lib/utils";
 import { FormError } from "@/components/form/form-error";
 import { FormSuccess } from "@/components/form/form-success";
-import { useSearchParams } from "next/navigation";
-import Link from "next/link";
-
-export const LoginForm = () => {
-  const searchParams = useSearchParams();
-  // Is user use same email in github or google?
-  const SameAccountError =
-    searchParams.get("error") === "OAuthAccountNotLinked"
-      ? "Email already exist in diffrent provider"
-      : "";
+import { ForgotPasswordSchema } from "@/schema";
+import { ForgotPassword } from "@/actions/forgot-password";
+export const ForgotPasswordForm = () => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   // 1. Define your form.
-  const form = useForm<z.infer<typeof loginSchema>>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<z.infer<typeof ForgotPasswordSchema>>({
+    resolver: zodResolver(ForgotPasswordSchema),
     defaultValues: {
       email: "",
-      password: "",
     },
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof loginSchema>) {
+  function onSubmit(values: z.infer<typeof ForgotPasswordSchema>) {
     setError("");
     setSuccess("");
     startTransition(() => {
-      login(values).then((data) => {
+      ForgotPassword(values).then((data) => {
         setError(data?.error);
         setSuccess(data?.success);
       });
@@ -54,11 +46,10 @@ export const LoginForm = () => {
   }
   return (
     <CardWrapper
-      headerTitle="Login"
-      headerLabel="Welcome back"
-      backButtonHref="/register"
-      backButtonLabel="Don't have an account?"
-      showSocial
+      headerTitle="😕 Forgot Password?"
+      headerLabel="Don't Worry"
+      backButtonHref="/login"
+      backButtonLabel="Back to Login"
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -76,32 +67,15 @@ export const LoginForm = () => {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="password"
-            disabled={isPending}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input type="password" placeholder="******" {...field} />
-                </FormControl>
-                <Button variant={"link"} size={"sm"} className={cn("px-0")}>
-                  <Link href="/forgot-password">Forgot Password?</Link>
-                </Button>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
 
-          <FormError message={error || SameAccountError} />
+          <FormError message={error} />
           <FormSuccess message={success} />
           <Button
             disabled={isPending}
             type="submit"
-            className={cn("disabled:cursor-not-allowed")}
+            className={cn("disabled:cursor-not-allowed w-full")}
           >
-            Login
+            Send verification Email
           </Button>
         </form>
       </Form>

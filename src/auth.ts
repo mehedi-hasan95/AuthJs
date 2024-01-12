@@ -29,7 +29,7 @@ export const {
   callbacks: {
     async signIn({ user, account }) {
       // All provider can login except credentials
-      if (account?.provider !== "credentials") {
+      if (account?.type !== "credentials") {
         return true;
       }
 

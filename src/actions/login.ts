@@ -15,11 +15,12 @@ export const login = async (values: z.infer<typeof loginSchema>) => {
   }
   const { email, password } = validateForm.data;
 
+  // User who have no account
   const existingUser = await getUserByEmail(email);
   if (!existingUser || !existingUser.email || !existingUser.password) {
     return { error: "Email is not exist" };
   }
-
+  // User who created an account but didn't verify
   if (!existingUser.emailVerified) {
     const theToken = await generateVerifyToken(existingUser.email);
     await sendVerificationEmail(theToken.email, theToken.token);
