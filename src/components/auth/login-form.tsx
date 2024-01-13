@@ -24,6 +24,9 @@ import Link from "next/link";
 
 export const LoginForm = () => {
   const searchParams = useSearchParams();
+  // Get the url where i visit after login (proctected route)
+  const callbackUrl = searchParams.get("callbackUrl");
+
   // Is user use same email in github or google?
   const SameAccountError =
     searchParams.get("error") === "OAuthAccountNotLinked"
@@ -46,7 +49,7 @@ export const LoginForm = () => {
     setError("");
     setSuccess("");
     startTransition(() => {
-      login(values).then((data) => {
+      login(values, callbackUrl).then((data) => {
         setError(data?.error);
         setSuccess(data?.success);
       });

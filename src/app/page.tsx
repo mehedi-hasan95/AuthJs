@@ -7,7 +7,7 @@ export default function Home() {
     <main className="commonCss">
       <div className="space-y-6 text-center flex flex-col">
         <Header title="Wellcome to my demo" label="What are you want for?" />
-        <LoginButton>
+        <LoginButton mode="modal" asChild>
           <Button>Login</Button>
         </LoginButton>
       </div>

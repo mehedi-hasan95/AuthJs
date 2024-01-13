@@ -5,10 +5,13 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { useSearchParams } from "next/navigation";
 
 export const SocialButton = () => {
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl");
   const socialLogin = (provider: "google" | "github") => {
-    signIn(provider, { callbackUrl: DEFAULT_LOGIN_REDIRECT });
+    signIn(provider, { callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT });
   };
   return (
     <div className="flex items-center w-full gap-x-2">

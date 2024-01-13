@@ -32,7 +32,16 @@ export default auth((req) => {
 
   //   Logout user can't visit the spesific page
   if (!isLogIn && !isPublicRoute) {
-    return Response.redirect(new URL("/signin", nextUrl));
+    // User trying to visite procected route redirect to login after logit redirect the previous page
+    let callbackUrl = nextUrl.pathname;
+    if (nextUrl.search) {
+      callbackUrl += nextUrl.search;
+    }
+    const encodedCallbackUrl = encodeURIComponent(callbackUrl);
+    // The route
+    return Response.redirect(
+      new URL(`/signin?callbackUrl=${encodedCallbackUrl}`, nextUrl)
+    );
   }
   return null;
 });

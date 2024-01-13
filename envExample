@@ -1,0 +1,13 @@
+DATABASE_URL="Your Database"
+NEXT_PUBLIC_URL="Public route example http://localhost:3000"
+NEXT_API_URL="Api route example http://localhost:3000/api"
+AUTH_SECRET="Auth secret example 123"
+
+GITHUB_CLIENT_ID=Github client
+GITHUB_CLIENT_SECRET=github secret
+
+GOOGLE_CLIENT_ID=google id
+GOOGLE_CLIENT_SECRET= google secret
+RESEND_API_KEY=I use resend to send email. its api key
+
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME="Cloudinary cloud name example fffff"
