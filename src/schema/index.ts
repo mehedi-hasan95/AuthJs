@@ -42,3 +42,32 @@ export const NewPasswordSchema = z.object({
     message: "New Password must be at least 1 characters.",
   }),
 });
+
+// Update profile
+export const UpdateProfileSchema = z
+  .object({
+    name: z.optional(
+      z.string().min(1, { message: "Name must ba at least 1 characters." })
+    ),
+    image: z.optional(z.string()),
+    password: z.optional(z.string().min(1)),
+    newPassword: z.optional(z.string().min(1)),
+  })
+  .refine(
+    (data) => {
+      if (data.password && !data.newPassword) {
+        return null;
+      }
+      return true;
+    },
+    { message: "New password is required", path: ["newPassword"] }
+  )
+  .refine(
+    (data) => {
+      if (data.newPassword && !data.password) {
+        return null;
+      }
+      return true;
+    },
+    { message: "Password is required", path: ["password"] }
+  );

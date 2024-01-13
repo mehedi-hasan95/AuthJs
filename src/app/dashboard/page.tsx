@@ -1,18 +1,15 @@
-import { auth, signOut } from "@/auth";
+import { UserInfo } from "@/components/custom/user-info";
+import { CurrentUser, CurrentUserRole } from "@/lib/current-user";
 
 const DashboardPage = async () => {
-  const session = await auth();
+  const user = await CurrentUser();
+  const role = await CurrentUserRole();
   return (
     <div className="commonCss">
-      {JSON.stringify(session)}
-      <form
-        action={async () => {
-          "use server";
-          await signOut();
-        }}
-      >
-        <button>Sign Out</button>
-      </form>
+      <p>{user?.name}</p>
+      <p>
+        <UserInfo />
+      </p>
     </div>
   );
 };

@@ -3,6 +3,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prismaDb } from "@/lib/prismaDb";
 import authConfig from "@/auth.config";
 import { getUserById } from "@/data/userInfo";
+import { getUserAccountByUserId } from "./lib/account";
 
 export const {
   handlers: { GET, POST },
@@ -47,14 +48,23 @@ export const {
       // Set User role
       if (session.user && token.role) {
         session.user.role = token.role;
+        session.user.isOuth = token.isOuth as boolean;
       }
 
+      if (session.user) {
+        session.user.name = token.name;
+        session.user.image = token.picture;
+      }
       return session;
     },
     async jwt({ token }) {
       if (!token.sub) return token;
       const existingUser = await getUserById(token.sub);
       if (!existingUser) return token;
+      const existingAccount = await getUserAccountByUserId(existingUser.id);
+      token.isOuth = !!existingAccount;
+      token.name = existingUser.name;
+      token.picture = existingUser.image;
       token.role = existingUser.role;
       return token;
     },
